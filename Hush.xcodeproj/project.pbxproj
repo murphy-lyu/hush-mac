@@ -1,0 +1,352 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1E2A72DA2055C0D68C136165 /* HushApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8971AB86CEFFE887ADBA66AF /* HushApp.swift */; };
+		6C98B0D6DE3289894FFA7683 /* BasicNetworkProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 367ED9889BD19DC1FCF22F14 /* BasicNetworkProbe.swift */; };
+		951BE418F0750C6ED00B604D /* SystemLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B8C620BF4CEDBA039FF99B /* SystemLauncher.swift */; };
+		9600DBC97456DEAE84065BA5 /* StartupStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578E34C32041B5D6784A82D8 /* StartupStore.swift */; };
+		BD223FBBACCFD3693D78A2AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18DF4594C7A18174F76068FA /* Assets.xcassets */; };
+		D271B9CA9AABC07B1B9692EB /* LaunchRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41DE5FBE5775D7C6A5022BD9 /* LaunchRunner.swift */; };
+		E4539A491E15F8DCE4B44A5A /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95618C6836A15FA517F6A76C /* MainView.swift */; };
+		F5B01C86EA66A16366F60333 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = B543FE9D12B72912E6677F36 /* Models.swift */; };
+		F75B7EA38476E7024F55C41C /* NetworkReadiness.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8E107E13E207A59E73FAC8 /* NetworkReadiness.swift */; };
+		FB5FD42F794F3BAC33388047 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F7798AC1AE932DBBC0339D8 /* LoginService.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		18DF4594C7A18174F76068FA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2F7798AC1AE932DBBC0339D8 /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
+		367ED9889BD19DC1FCF22F14 /* BasicNetworkProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicNetworkProbe.swift; sourceTree = "<group>"; };
+		41DE5FBE5775D7C6A5022BD9 /* LaunchRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchRunner.swift; sourceTree = "<group>"; };
+		578E34C32041B5D6784A82D8 /* StartupStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupStore.swift; sourceTree = "<group>"; };
+		60B8C620BF4CEDBA039FF99B /* SystemLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemLauncher.swift; sourceTree = "<group>"; };
+		664D0852F7C4BB53CCD3F928 /* Hush.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hush.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8971AB86CEFFE887ADBA66AF /* HushApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HushApp.swift; sourceTree = "<group>"; };
+		95618C6836A15FA517F6A76C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		9AB8DFF796BBD9EF5E24F5F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AA8E107E13E207A59E73FAC8 /* NetworkReadiness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReadiness.swift; sourceTree = "<group>"; };
+		B543FE9D12B72912E6677F36 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0F115C362479E6F9491775D9 /* HushCore */ = {
+			isa = PBXGroup;
+			children = (
+				367ED9889BD19DC1FCF22F14 /* BasicNetworkProbe.swift */,
+				41DE5FBE5775D7C6A5022BD9 /* LaunchRunner.swift */,
+				B543FE9D12B72912E6677F36 /* Models.swift */,
+				AA8E107E13E207A59E73FAC8 /* NetworkReadiness.swift */,
+				578E34C32041B5D6784A82D8 /* StartupStore.swift */,
+			);
+			path = HushCore;
+			sourceTree = "<group>";
+		};
+		2141B7C04FC0DDA979BCAC32 = {
+			isa = PBXGroup;
+			children = (
+				3AF32BD3ED2042D0DB9171AF /* Hush */,
+				0F115C362479E6F9491775D9 /* HushCore */,
+				E3B8C55CC9776F358EDB9706 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3AF32BD3ED2042D0DB9171AF /* Hush */ = {
+			isa = PBXGroup;
+			children = (
+				18DF4594C7A18174F76068FA /* Assets.xcassets */,
+				8971AB86CEFFE887ADBA66AF /* HushApp.swift */,
+				9AB8DFF796BBD9EF5E24F5F9 /* Info.plist */,
+				2F7798AC1AE932DBBC0339D8 /* LoginService.swift */,
+				95618C6836A15FA517F6A76C /* MainView.swift */,
+				60B8C620BF4CEDBA039FF99B /* SystemLauncher.swift */,
+			);
+			path = Hush;
+			sourceTree = "<group>";
+		};
+		E3B8C55CC9776F358EDB9706 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				664D0852F7C4BB53CCD3F928 /* Hush.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2B3E4653A7BBE0607CCC48A4 /* Hush */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 177968F7A9DE2E587E4673AC /* Build configuration list for PBXNativeTarget "Hush" */;
+			buildPhases = (
+				3B5BE0B8938861B0F0795209 /* Sources */,
+				05B466E4A94D9C58BE3EBFF5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Hush;
+			packageProductDependencies = (
+			);
+			productName = Hush;
+			productReference = 664D0852F7C4BB53CCD3F928 /* Hush.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0F21E0AB7C84BD6590133952 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					2B3E4653A7BBE0607CCC48A4 = {
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 5E562B37A696A22839D3BF87 /* Build configuration list for PBXProject "Hush" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 2141B7C04FC0DDA979BCAC32;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = E3B8C55CC9776F358EDB9706 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2B3E4653A7BBE0607CCC48A4 /* Hush */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		05B466E4A94D9C58BE3EBFF5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD223FBBACCFD3693D78A2AE /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3B5BE0B8938861B0F0795209 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6C98B0D6DE3289894FFA7683 /* BasicNetworkProbe.swift in Sources */,
+				1E2A72DA2055C0D68C136165 /* HushApp.swift in Sources */,
+				D271B9CA9AABC07B1B9692EB /* LaunchRunner.swift in Sources */,
+				FB5FD42F794F3BAC33388047 /* LoginService.swift in Sources */,
+				E4539A491E15F8DCE4B44A5A /* MainView.swift in Sources */,
+				F5B01C86EA66A16366F60333 /* Models.swift in Sources */,
+				F75B7EA38476E7024F55C41C /* NetworkReadiness.swift in Sources */,
+				9600DBC97456DEAE84065BA5 /* StartupStore.swift in Sources */,
+				951BE418F0750C6ED00B604D /* SystemLauncher.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0A8D4D0F2032A9B637FE6B21 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Hush/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.murphy.hush;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		1FAC0BCB90171D57937F6700 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 4;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 0.2.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		5A7331402C57388FC0819F74 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 4;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 0.2.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		6DBB96D1DC366948035ECD48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Hush/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.murphy.hush;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		177968F7A9DE2E587E4673AC /* Build configuration list for PBXNativeTarget "Hush" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A8D4D0F2032A9B637FE6B21 /* Debug */,
+				6DBB96D1DC366948035ECD48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5E562B37A696A22839D3BF87 /* Build configuration list for PBXProject "Hush" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5A7331402C57388FC0819F74 /* Debug */,
+				1FAC0BCB90171D57937F6700 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0F21E0AB7C84BD6590133952 /* Project object */;
+}
