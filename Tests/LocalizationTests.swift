@@ -13,8 +13,8 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(L10n.text("第 15 项", language: .english), "Item 15")
         XCTAssertEqual(L10n.text("已完成 · 2 项失败，请查看记录", language: .english), "Completed · 2 failed; see History")
         XCTAssertEqual(L10n.text("Surge · 等待基础网络就绪（1/2，最多 5 分钟）", language: .english), "Surge · Waiting for local network (1/2, up to 5 minutes)")
-        XCTAssertEqual(L10n.text("网络检测已通过 · 已启动 · 已请求隐藏", language: .traditionalChinese), "網路檢查已通過 · 已啟動 · 已請求隱藏")
-        XCTAssertEqual(L10n.text("网络 1.5 秒 / 启动 0.1 秒 / 总计 1.6 秒", language: .english), "Network 1.5 s / Launch 0.1 s / Total 1.6 s")
+        XCTAssertEqual(L10n.text("网络检测已通过 · 已启动 · 已请求隐藏", language: .traditionalChinese), "網路連線檢查已通過 · 已啟動 · 已請求隱藏")
+        XCTAssertEqual(L10n.text("网络 1.5 秒 / 启动 0.1 秒 / 总计 1.6 秒", language: .english), "Network wait 1.5 s / Launch 0.1 s / Total 1.6 s")
         XCTAssertEqual(L10n.text("My App", language: .traditionalChinese), "My App")
     }
     func testEveryCatalogEntryHasBothTranslations() {

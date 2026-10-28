@@ -33,7 +33,7 @@ struct MainView: View {
         .environment(\.hushLanguage, preferences.effectiveLanguage)
         .tint(hushAccent)
         .frame(minWidth: 860, minHeight: 580)
-        .alert(t("需要处理"), isPresented: Binding(
+        .alert(t("无法完成操作"), isPresented: Binding(
             get: { store.error != nil },
             set: { if !$0 { store.error = nil } }
         )) {
@@ -99,12 +99,12 @@ struct MainView: View {
                     .modifier(HushActionStyle()).disabled(runner.records.isEmpty)
             } else {
                 Button { if runner.isRunning { runner.cancel() } else { runner.start(store.items) } } label: {
-                    Label(runner.isRunning ? t("停止") : t("测试全部"), systemImage: runner.isRunning ? "stop.fill" : "play.fill")
+                    Label(runner.isRunning ? t("停止") : t("测试启动"), systemImage: runner.isRunning ? "stop.fill" : "play.fill")
                 }
                 .modifier(HushActionStyle())
                 .disabled(!runner.isRunning && (store.loadFailed || !store.items.contains(where: \.enabled)))
-                .help(t("按延迟和网络条件启动已启用应用；已运行的应用会跳过"))
-                Button(action: addApplications) { Label(t("添加应用"), systemImage: "plus") }
+                .help(runner.isRunning ? t("停止后续启动，不会退出已启动的应用。") : t("立即按当前设置启动已启用的应用；已运行的应用会跳过。网络工具优先启动。"))
+                Button(action: addApplications) { Label(t("添加应用…"), systemImage: "plus") }
                     .modifier(HushActionStyle(prominent: true))
                     .disabled(runner.isRunning || store.loadFailed)
                     .keyboardShortcut("o", modifiers: .command)
@@ -137,13 +137,16 @@ struct MainView: View {
         VStack(spacing: 14) {
             if store.items.isEmpty {
                 VStack(spacing: 13) {
-                    Image(systemName: "sun.horizon")
+                    Image(systemName: "plus.app")
                         .font(.system(size: 40, weight: .ultraLight)).foregroundStyle(hushAccent)
-                    Text(t("从一个安静的早晨开始"))
+                    Text(t("还没有添加应用"))
                         .font(HushTypography.font(size: 18, weight: .medium))
-                    Text(t("添加登录后需要的应用，设置隐藏、延迟、网络等待与启动顺序。"))
+                    Text(t("添加登录后要启动的应用，再设置启动方式和顺序。"))
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.horizontal, 24)
                         .font(HushTypography.font(size: 13)).foregroundStyle(.secondary)
-                    Button(t("选择应用…"), action: addApplications)
+                    Button(t("添加应用…"), action: addApplications)
                         .padding(.top, 4).disabled(store.loadFailed)
                     Text(t("也可以把应用拖到这里"))
                         .font(HushTypography.font(size: 11)).foregroundStyle(.tertiary)
@@ -158,7 +161,7 @@ struct MainView: View {
                         Text(t("联网后")).frame(width: 52)
                         Text(t("隐藏")).frame(width: 44)
                         Text(t("延迟")).frame(width: 90)
-                        Text(t("顺序 / 测试")).frame(width: 120)
+                        Text(t("操作")).frame(width: 120)
                     }
                     .font(HushTypography.font(size: 11, weight: .medium)).foregroundStyle(.secondary)
                     .padding(.horizontal, 14).padding(.vertical, 11)
@@ -200,7 +203,7 @@ struct MainView: View {
                 VStack(spacing: 12) {
                     Image(systemName: "clock").font(.system(size: 34, weight: .light)).foregroundStyle(.tertiary)
                     Text(t("还没有启动记录")).font(HushTypography.font(size: 15, weight: .medium))
-                    Text(t("测试启动后，可以在这里查看结果。"))
+                    Text(t("登录启动和测试启动的结果会显示在这里。"))
                         .font(HushTypography.font(size: 12)).foregroundStyle(.secondary)
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
@@ -239,7 +242,7 @@ struct MainView: View {
 
     private func addApplications() {
         let panel = NSOpenPanel()
-        panel.title = t("添加启动应用")
+        panel.title = t("添加应用…")
         panel.prompt = t("添加")
         panel.allowedContentTypes = [.applicationBundle]
         panel.allowsMultipleSelection = true
@@ -255,7 +258,7 @@ struct MainView: View {
             store.error = t("请选择有效的 macOS 应用（.app）。"); return
         }
         guard bundle.bundleIdentifier != Bundle.main.bundleIdentifier else {
-            store.error = t("Hush 的登录启动请在设置中开启。"); return
+            store.error = t("请在 Hush 的“设置 → 通用”中开启“登录时运行 Hush”。"); return
         }
         let name = (bundle.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String)
             ?? (bundle.object(forInfoDictionaryKey: "CFBundleName") as? String)
@@ -285,23 +288,24 @@ private struct AppRow: View {
             ApplicationIcon(path: item.path)
             VStack(alignment: .leading, spacing: 4) {
                 Text(item.name).font(HushTypography.font(size: 13, weight: .medium)).lineLimit(1)
-                Text(active ? t("正在处理…") : (item.enabled ? t("第 \(index + 1) 项") : t("已暂停")))
+                Text(active ? t("正在处理…") : (item.enabled ? t("第 \(index + 1) 项") : t("未启用")))
                     .font(HushTypography.font(size: 10)).foregroundStyle(active ? hushAccent : .secondary)
             }
-            .frame(maxWidth: .infinity, alignment: .leading).help(item.path)
+            .frame(maxWidth: .infinity, alignment: .leading).help(item.providesNetwork ? t("网络工具优先启动，其余应用按列表顺序启动。") + "\n" + item.path : item.path)
             Toggle(t("等待网络可用后启动 \(item.name)"), isOn: Binding(get: { item.waitForNetwork }, set: { value in update { $0.waitForNetwork = value } }))
                 .labelsHidden().toggleStyle(.checkbox).frame(width: 52).disabled(running)
-                .help(item.providesNetwork ? t("Wi-Fi 或有线取得有效 IP 和网关后即可启动，不检查外网或代理。未就绪时退避重试，最多等待 5 分钟。") : t("首次间隔 0.5 秒确认 2 次 HTTPS 成功；同一轮 15 秒内且网络状态未变时复用结果。失败退避重试，最多等待 5 分钟。不保证各应用服务均可达。"))
+                .help(item.providesNetwork ? t("等待 Wi-Fi 或有线网络连接就绪后启动，不要求互联网或代理可用。最多等待 5 分钟，超时后跳过并记录失败。") : t("通过互联网连接检测后启动，不保证此应用的服务可用。最多等待 5 分钟，超时后跳过并记录失败。"))
             Toggle(t("隐藏启动 \(item.name)"), isOn: Binding(get: { item.hidden }, set: { value in update { $0.hidden = value } }))
                 .labelsHidden().toggleStyle(.checkbox).frame(width: 44).disabled(running)
-                .help(t("请求隐藏启动，效果取决于应用；不会最小化到 Dock"))
+                .help(t("启动时尝试隐藏窗口，不会最小化到 Dock；部分应用仍可能显示窗口。"))
             DelayPopUp(value: Binding(get: { item.delay }, set: { value in update { $0.delay = value } }),
                        enabled: !running)
                 .frame(width: 90, height: 24)
+                .help(t("启动此应用前的等待时间，不含网络等待。网络工具优先，其余应用按列表顺序启动。"))
             HStack(spacing: 3) {
                 rowButton("chevron.up", help: t("上移"), disabled: running || index == 0) { move(-1) }
                 rowButton("chevron.down", help: t("下移"), disabled: running || index == count - 1) { move(1) }
-                rowButton("play", help: t("测试此应用（含延迟与网络等待）"), disabled: running, action: test)
+                rowButton("play", help: t("立即按此应用的设置测试启动，包含延迟和网络等待；未启用时也可测试。"), disabled: running, action: test)
                 Menu {
                     Button(t("在访达中显示")) { NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: item.path)]) }
                     Divider()
@@ -389,7 +393,7 @@ private struct ApplicationIcon: View {
             else {
                 Image(systemName: "app.dashed").resizable().scaledToFit()
                     .foregroundStyle(.secondary)
-                    .help(t("应用路径不可用，请通过更多操作移除后重新添加"))
+                    .help(t("找不到应用，请从列表移除后重新添加。"))
             }
         }
         .frame(width: 32, height: 32)

@@ -101,15 +101,24 @@ private struct GeneralSettingsView: View {
     private func t(_ source: String) -> String { L10n.text(source, language: preferences.effectiveLanguage) }
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            section(t("启动")) {
+            section(t("登录启动")) {
                 VStack(spacing: 12) {
                     settingRow(t("登录时运行 Hush")) {
                         Toggle(t("登录时运行 Hush"), isOn: Binding(get: { login.enabled }, set: { login.setEnabled($0) }))
                             .labelsHidden().toggleStyle(.switch).controlSize(.small).disabled(!login.allowsSystemChanges)
+                            .help(t("如应用已有登录启动设置，请先关闭，避免重复启动。"))
+                    }
+                    Text(t("登录后自动启动列表中已启用的应用。"))
+                        .font(HushTypography.font(size: 11)).foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    if login.needsApproval {
+                        Text(t("请在系统设置中允许 Hush 登录时运行。"))
+                            .font(HushTypography.font(size: 11)).foregroundStyle(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     Divider()
                     settingRow(t("系统登录项")) {
-                        Button(login.needsApproval ? t("前往允许…") : t("打开设置…")) { login.openSettings() }
+                        Button(login.needsApproval ? t("前往系统设置…") : t("打开系统设置…")) { login.openSettings() }
                             .disabled(!login.allowsSystemChanges)
                     }
                 }
@@ -141,7 +150,7 @@ private struct GeneralSettingsView: View {
             }
             Spacer(minLength: 0)
         }.font(HushTypography.font(size: 13)).padding(.horizontal, 26).padding(.vertical, 20)
-        .alert(t("无法更新登录启动"), isPresented: Binding(get: { login.error != nil }, set: { if !$0 { login.error = nil } })) {
+        .alert(t("无法更改登录启动设置"), isPresented: Binding(get: { login.error != nil }, set: { if !$0 { login.error = nil } })) {
             Button(t("好"), role: .cancel) { login.error = nil }
         } message: { Text(t(login.error ?? "")) }
     }
@@ -210,6 +219,8 @@ private struct AboutHushView: View {
             Image(nsImage: NSApp.applicationIconImage).resizable().scaledToFit().frame(width: 64, height: 64)
                 .accessibilityLabel(L10n.text("Hush 应用图标", language: preferences.effectiveLanguage))
             Text("Hush").font(HushTypography.font(size: 24, weight: .semibold, design: .rounded))
+            Text(L10n.text("管理登录后启动的应用", language: preferences.effectiveLanguage))
+                .font(HushTypography.font(size: 11)).foregroundStyle(.secondary)
             Text(L10n.text("版本 \(version) · 构建 \(build)", language: preferences.effectiveLanguage)).font(HushTypography.font(size: 12, design: .monospaced)).foregroundStyle(.secondary)
             Divider().frame(width: 160).padding(.vertical, 3)
             HStack(spacing: 10) {

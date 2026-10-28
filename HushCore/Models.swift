@@ -56,7 +56,7 @@ struct Configuration: Codable, Equatable {
     var items: [StartupItem] = []
 
     func validated() throws -> Configuration {
-        guard version == 1 else { throw HushError.message("配置版本较新，请更新 Hush 后重试。") }
+        guard version == 1 else { throw HushError.message("不支持此配置版本，请更新 Hush 后重试。") }
         guard Set(items.map(\.id)).count == items.count,
               Set(items.map(\.path)).count == items.count,
               items.allSatisfy({ (0...300).contains($0.delay) && $0.path.hasPrefix("/") })

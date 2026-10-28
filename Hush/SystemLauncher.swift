@@ -26,10 +26,10 @@ final class SystemLauncher: ApplicationLaunching {
             throw HushError.message("找不到应用，请移除后重新添加。")
         }
         guard bundle.bundleIdentifier != Bundle.main.bundleIdentifier else {
-            throw HushError.message("不能把 Hush 添加到自己的启动列表。")
+            throw HushError.message("请在 Hush 的设置中开启登录启动，无需将 Hush 添加到列表。")
         }
         if let expected = item.bundleIdentifier, bundle.bundleIdentifier != expected {
-            throw HushError.message("此路径的应用已发生变化，请重新添加。")
+            throw HushError.message("此位置的应用已更换，请从列表移除后重新添加。")
         }
         let request = LaunchRequest()
         return try await withTaskCancellationHandler(operation: {
@@ -45,7 +45,7 @@ final class SystemLauncher: ApplicationLaunching {
                         guard request.continuation != nil else { return }
                         if let error { request.finish(.failure(error)); return }
                         guard let app else {
-                            request.finish(.failure(HushError.message("系统未返回应用进程。"))); return
+                            request.finish(.failure(HushError.message("无法确认应用是否已启动，请检查应用后重试。"))); return
                         }
                         // Never hide an application the user has brought to the front.
                         if item.hidden && !app.isActive { _ = app.hide() }
