@@ -5,15 +5,27 @@ import SwiftUI
     @MainActor static func main() {
         let app = NSApplication.shared
         app.setActivationPolicy(.regular)
+        app.appearance = NSAppearance(named: CommandLine.arguments.contains("--dark") ? .darkAqua : .aqua)
         let store = StartupStore(persistence: PreviewPersistence())
         let runner = LaunchRunner(launcher: PreviewLauncher())
-        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 860, height: 640),
-                              styleMask: [.titled, .closable, .resizable], backing: .buffered, defer: false)
+        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: CommandLine.arguments.contains("--compact") ? 860 : 920, height: CommandLine.arguments.contains("--compact") ? 580 : 640),
+                              styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView], backing: .buffered, defer: false)
         window.title = "Hush UI Regression"
+        window.isOpaque = false
+        window.backgroundColor = .clear
+        window.titlebarAppearsTransparent = true
+        window.titleVisibility = .hidden
+        window.appearance = NSAppearance(named: CommandLine.arguments.contains("--dark") ? .darkAqua : .aqua)
         let login = LoginService(allowsSystemChanges: false)
         login.setEnabled(true) // Must be a no-op in a test process.
         precondition(!login.enabled && !login.needsApproval)
-        window.contentView = NSHostingView(rootView: MainView(store: store, runner: runner, login: login))
+        let defaults = UserDefaults(suiteName: "com.murphy.hush.qa.preferences")!
+        defaults.removePersistentDomain(forName: "com.murphy.hush.qa.preferences")
+        let preferences = AppPreferences(defaults: defaults)
+        if CommandLine.arguments.contains("--zh") { preferences.language = .simplifiedChinese }
+        if CommandLine.arguments.contains("--zh-hant") { preferences.language = .traditionalChinese }
+        let settings = SettingsWindow(login: login, preferences: preferences)
+        window.contentView = NSHostingView(rootView: MainView(store: store, runner: runner, preferences: preferences, login: login, openSettings: { settings.show() }))
         window.center()
         window.makeKeyAndOrderFront(nil)
         app.activate(ignoringOtherApps: true)
@@ -35,14 +47,20 @@ import SwiftUI
                 }
             }
         }
-        withExtendedLifetime((store, runner, window)) { app.run() }
+        withExtendedLifetime((store, runner, window, settings, preferences)) { app.run() }
     }
 }
 
 private final class PreviewPersistence: ConfigurationPersistence {
     func load() throws -> Configuration {
         Configuration(items: ["Fantastical", "Surge", "Tailscale", "Mail", "Transsioner", "ChatGPT", "Android Studio"].map {
-            StartupItem(name: $0, path: "/Applications/\($0).app", waitForNetwork: true)
+            let path: String
+            switch $0 {
+            case "Transsioner": path = "/Applications/Lark.app"
+            case "Mail": path = "/System/Applications/Mail.app"
+            default: path = "/Applications/\($0).app"
+            }
+            return StartupItem(name: $0, path: path, waitForNetwork: true)
         })
     }
     func save(_ configuration: Configuration) throws {}
