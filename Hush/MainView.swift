@@ -134,7 +134,7 @@ struct MainView: View {
             }
             HStack(alignment: .top, spacing: 9) {
                 Image(systemName: "info.circle").padding(.top, 1)
-                Text("Surge、Tailscale 优先启动：勾选“联网后”时等待 Wi-Fi／有线取得 IP 和网关；其他应用等待 HTTPS 可用。均需连续通过 3 次，最多等 5 分钟。")
+                Text("网络工具优先，其余按顺序。勾选“联网后”时，网络工具等待基础网络，其他应用检查 HTTPS；同一轮复用近期结果，网络变化时重新检测。")
                     .fixedSize(horizontal: false, vertical: true)
                 Button("登录项设置") { login.openSettings() }.buttonStyle(.link)
             }
@@ -252,8 +252,7 @@ private struct AppRow: View {
         HStack(spacing: 10) {
             Toggle("启用 \(item.name)", isOn: Binding(get: { item.enabled }, set: { value in update { $0.enabled = value } }))
                 .labelsHidden().toggleStyle(.checkbox).disabled(running)
-            Image(nsImage: NSWorkspace.shared.icon(forFile: item.path))
-                .resizable().frame(width: 32, height: 32)
+            ApplicationIcon(path: item.path)
             VStack(alignment: .leading, spacing: 4) {
                 Text(item.name).font(.system(size: 13, weight: .medium)).lineLimit(1)
                 Text(active ? "正在处理…" : (item.enabled ? "第 \(index + 1) 项" : "已暂停"))
@@ -262,7 +261,7 @@ private struct AppRow: View {
             .frame(maxWidth: .infinity, alignment: .leading).help(item.path)
             Toggle("等待网络可用后启动 \(item.name)", isOn: Binding(get: { item.waitForNetwork }, set: { value in update { $0.waitForNetwork = value } }))
                 .labelsHidden().toggleStyle(.checkbox).frame(width: 52).disabled(running)
-                .help(item.providesNetwork ? "延迟后等待 Wi-Fi 或有线连接取得有效 IP 和网关，连续通过 3 次再启动；不检查外网、DNS 或代理，最多等待 5 分钟。" : "延迟后每 5 秒检测 HTTPS 连通性，连续成功 3 次再启动；最多等待 5 分钟，超时不启动并继续下一项。遵循系统代理，不保证各应用服务均可达。")
+                .help(item.providesNetwork ? "Wi-Fi 或有线取得有效 IP 和网关后即可启动，不检查外网或代理。未就绪时退避重试，最多等待 5 分钟。" : "首次间隔 0.5 秒确认 2 次 HTTPS 成功；同一轮 15 秒内且网络状态未变时复用结果。失败退避重试，最多等待 5 分钟。不保证各应用服务均可达。")
             Toggle("隐藏启动 \(item.name)", isOn: Binding(get: { item.hidden }, set: { value in update { $0.hidden = value } }))
                 .labelsHidden().toggleStyle(.checkbox).frame(width: 52).disabled(running)
                 .help("请求隐藏启动，效果取决于应用；不会最小化到 Dock")
@@ -320,7 +319,7 @@ struct DelayPopUp: NSViewRepresentable {
         if button.itemArray.map(\.tag) != choices {
             button.removeAllItems()
             for seconds in choices {
-                button.addItem(withTitle: seconds == 0 ? "立即" : "\(seconds) 秒")
+                button.addItem(withTitle: seconds == 0 ? "无延迟" : "\(seconds) 秒")
                 button.lastItem?.tag = seconds
             }
         }
@@ -340,5 +339,20 @@ struct DelayPopUp: NSViewRepresentable {
             guard let selected = sender.selectedItem?.tag, selected != value.wrappedValue else { return }
             value.wrappedValue = selected
         }
+    }
+}
+
+@MainActor
+private struct ApplicationIcon: View {
+    let path: String
+    @State private var icon: NSImage?
+
+    var body: some View {
+        Group {
+            if let icon { Image(nsImage: icon).resizable() }
+            else { Color.clear }
+        }
+        .frame(width: 32, height: 32)
+        .task(id: path) { icon = NSWorkspace.shared.icon(forFile: path) }
     }
 }

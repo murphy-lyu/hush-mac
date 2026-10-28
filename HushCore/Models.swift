@@ -78,6 +78,14 @@ struct RunRecord: Identifiable, Codable {
     var name: String
     var detail: String
     var failed = false
+    var timing: LaunchTiming? = nil
+}
+
+struct LaunchTiming: Codable {
+    let delay: TimeInterval
+    let network: TimeInterval
+    let launch: TimeInterval
+    let total: TimeInterval
 }
 
 protocol ConfigurationPersistence {

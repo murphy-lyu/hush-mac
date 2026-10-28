@@ -11,7 +11,7 @@ final class NetworkReadinessTests: XCTestCase {
         let clock = TestClock()
         var results = [true, false, true, true, true]
         var counts: [Int] = []
-        let gate = NetworkReadiness(probe: { _ in results.removeFirst() },
+        let gate = NetworkReadiness(interval: 5, requiredSuccesses: 3, retryInterval: 5, probe: { _ in results.removeFirst() },
                                     sleep: { clock.advance($0) }, now: { clock.time })
         let ready = try await gate.waitUntilReady(whileNeeded: { true }, progress: { counts.append($0) })
         XCTAssertTrue(ready)
@@ -23,7 +23,7 @@ final class NetworkReadinessTests: XCTestCase {
     func testProbeErrorsRetryAndTimeoutContinuesLocalApplication() async {
         let clock = TestClock()
         var timeouts: [TimeInterval] = []
-        let gate = NetworkReadiness(timeout: 12, probe: {
+        let gate = NetworkReadiness(timeout: 12, retryInterval: 5, probe: {
             timeouts.append($0)
             throw URLError(.notConnectedToInternet)
         }, sleep: { clock.advance($0) }, now: { clock.time })
@@ -59,7 +59,7 @@ final class NetworkReadinessTests: XCTestCase {
         launcher.onLaunch = { events.append("launch:\($0)") }
         let runner = LaunchRunner(launcher: launcher, network: gate, sleep: { events.append("delay:\($0)") })
         await runner.start([item("Online", delay: 3), item("Local", waits: false)])?.value
-        XCTAssertEqual(events, ["delay:3", "probe", "probe", "probe", "launch:Online", "launch:Local"])
+        XCTAssertEqual(events, ["delay:3", "probe", "probe", "launch:Online", "launch:Local"])
         XCTAssertTrue(runner.records.first(where: { $0.name == "Online" })?.detail.contains("网络检测已通过") == true)
     }
 
@@ -83,7 +83,7 @@ final class NetworkReadinessTests: XCTestCase {
         let clock = TestClock()
         var basicProbes = 0
         let gate = NetworkReadiness(probe: { _ in XCTFail("Network tools must not use HTTPS"); return false })
-        let basic = NetworkReadiness(probe: { _ in basicProbes += 1; return true },
+        let basic = NetworkReadiness(requiredSuccesses: 1, context: { ["test": 1] }, probe: { _ in basicProbes += 1; return true },
                                      sleep: { clock.advance($0) }, now: { clock.time })
         let runner = LaunchRunner(launcher: launcher, network: gate, basicNetwork: basic)
         let tools = [
@@ -93,7 +93,7 @@ final class NetworkReadinessTests: XCTestCase {
         ]
         await runner.start(tools)?.value
         XCTAssertEqual(launcher.launched, tools.map(\.name))
-        XCTAssertEqual(basicProbes, 9)
+        XCTAssertEqual(basicProbes, 1)
         XCTAssertTrue(runner.records.allSatisfy { $0.detail.contains("基础网络检测已通过") })
         XCTAssertEqual(runner.records.filter(\.failed).count, 0)
         XCTAssertTrue(tools.allSatisfy(\.waitForNetwork)) // No rewrite of the user's preferences.
