@@ -60,7 +60,7 @@ private struct SettingsRootView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Text(t(state.pane == .general ? "通用" : "关于")).font(.system(size: 21, weight: .semibold))
+                Text(t(state.pane == .general ? "通用" : "关于")).font(HushTypography.font(size: 21, weight: .semibold))
                 Spacer()
                 tab(.general, title: t("通用"), symbol: "gearshape")
                 tab(.about, title: t("关于"), symbol: "info.circle")
@@ -79,6 +79,7 @@ private struct SettingsRootView: View {
             }.frame(maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .font(HushTypography.font(size: 13))
         .background { HushFrostedBackground() }
         .tint(.primary)
     }
@@ -86,7 +87,7 @@ private struct SettingsRootView: View {
         Button { state.pane = pane } label: {
             VStack(spacing: 4) {
                 Image(systemName: symbol).font(.system(size: 19))
-                Text(title).font(.system(size: 11))
+                Text(title).font(HushTypography.font(size: 11))
             }.frame(width: 56, height: 40).padding(.vertical, 8)
                 .background(state.pane == pane ? Color.primary.opacity(0.075) : .clear, in: RoundedRectangle(cornerRadius: 11))
                 .contentShape(RoundedRectangle(cornerRadius: 11))
@@ -133,13 +134,13 @@ private struct GeneralSettingsView: View {
                 }
             }
             if !preferences.showDockIcon && !preferences.showMenuBarIcon {
-                Text(t("可从 Finder 或 Spotlight 重新打开 Hush。")).font(.system(size: 11)).foregroundStyle(.secondary)
+                Text(t("可从 Finder 或 Spotlight 重新打开 Hush。")).font(HushTypography.font(size: 11)).foregroundStyle(.secondary)
             }
             if !login.allowsSystemChanges {
-                Text(t("测试窗口 · 不修改系统登录项")).font(.system(size: 10)).foregroundStyle(.secondary)
+                Text(t("测试窗口 · 不修改系统登录项")).font(HushTypography.font(size: 10)).foregroundStyle(.secondary)
             }
             Spacer(minLength: 0)
-        }.font(.system(size: 13)).padding(.horizontal, 26).padding(.vertical, 20)
+        }.font(HushTypography.font(size: 13)).padding(.horizontal, 26).padding(.vertical, 20)
         .alert(t("无法更新登录启动"), isPresented: Binding(get: { login.error != nil }, set: { if !$0 { login.error = nil } })) {
             Button(t("好"), role: .cancel) { login.error = nil }
         } message: { Text(t(login.error ?? "")) }
@@ -153,7 +154,7 @@ private struct GeneralSettingsView: View {
     }
     private func section<C: View>(_ title: String, @ViewBuilder content: () -> C) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(title).font(.system(size: 11, weight: .medium)).foregroundStyle(.secondary)
+            Text(title).font(HushTypography.font(size: 11, weight: .medium)).foregroundStyle(.secondary)
             content().padding(13).background(Color(nsColor: .controlBackgroundColor).opacity(0.65), in: RoundedRectangle(cornerRadius: 12))
         }
     }
@@ -166,6 +167,9 @@ private struct LanguagePopUp: NSViewRepresentable {
     func makeCoordinator() -> Coordinator { Coordinator(value: $value) }
     func makeNSView(context: Context) -> NSPopUpButton {
         let view = NSPopUpButton(frame: .zero, pullsDown: false)
+        if let font = NSFont(name: "BerkeleyMono-Regular", size: view.font?.pointSize ?? NSFont.systemFontSize) {
+            view.font = font
+        }
         view.target = context.coordinator
         view.action = #selector(Coordinator.changed(_:))
         return view
@@ -205,15 +209,15 @@ private struct AboutHushView: View {
         VStack(spacing: 12) {
             Image(nsImage: NSApp.applicationIconImage).resizable().scaledToFit().frame(width: 64, height: 64)
                 .accessibilityLabel(L10n.text("Hush 应用图标", language: preferences.effectiveLanguage))
-            Text("Hush").font(.system(size: 24, weight: .semibold, design: .rounded))
-            Text(L10n.text("版本 \(version) · 构建 \(build)", language: preferences.effectiveLanguage)).font(.system(size: 12, design: .monospaced)).foregroundStyle(.secondary)
+            Text("Hush").font(HushTypography.font(size: 24, weight: .semibold, design: .rounded))
+            Text(L10n.text("版本 \(version) · 构建 \(build)", language: preferences.effectiveLanguage)).font(HushTypography.font(size: 12, design: .monospaced)).foregroundStyle(.secondary)
             Divider().frame(width: 160).padding(.vertical, 3)
             HStack(spacing: 10) {
                 Link("Twitter / X", destination: URL(string: "https://x.com/yasashii_me")!).buttonStyle(.plain)
                 Text("·").foregroundStyle(.tertiary)
                 Link("GitHub", destination: URL(string: "https://github.com/murphy-lyu/hush-mac")!).buttonStyle(.plain)
-            }.font(.system(size: 12, design: .monospaced)).foregroundStyle(.primary)
-            Text("@Murphy").font(.system(size: 11, design: .monospaced)).foregroundStyle(.tertiary)
+            }.font(HushTypography.font(size: 12, design: .monospaced)).foregroundStyle(.primary)
+            Text("@Murphy").font(HushTypography.font(size: 11, design: .monospaced)).foregroundStyle(.tertiary)
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

@@ -28,6 +28,7 @@ struct MainView: View {
             .padding(.horizontal, 22).padding(.top, 34).padding(.bottom, 18)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .font(HushTypography.font(size: 13))
         .background { HushFrostedBackground() }
         .environment(\.hushLanguage, preferences.effectiveLanguage)
         .tint(hushAccent)
@@ -47,7 +48,7 @@ struct MainView: View {
             HStack(spacing: 10) {
                 Image(systemName: "square.stack")
                     .font(.system(size: 25)).foregroundStyle(hushAccent)
-                Text("Hush").font(.system(size: 23, weight: .semibold, design: .rounded))
+                Text("Hush").font(HushTypography.font(size: 23, weight: .semibold, design: .rounded))
             }.padding(.horizontal, 12)
             VStack(spacing: 5) {
                 navigationItem(t("启动应用"), symbol: "square.stack.3d.up", selected: !showingHistory) { showingHistory = false }
@@ -61,13 +62,13 @@ struct MainView: View {
                         Image(systemName: "gearshape")
                         Text(t("设置")).lineLimit(1).fixedSize(horizontal: true, vertical: false)
                     }
-                        .font(.system(size: 12))
+                        .font(HushTypography.font(size: 12))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .contentShape(Rectangle())
                 }.buttonStyle(.plain).foregroundStyle(.secondary)
                     .keyboardShortcut(",", modifiers: .command)
                 if !login.allowsSystemChanges {
-                    Text(t("测试窗口 · 不修改系统登录项")).font(.system(size: 10)).foregroundStyle(.secondary)
+                    Text(t("测试窗口 · 不修改系统登录项")).font(HushTypography.font(size: 10)).foregroundStyle(.secondary)
                 }
             }.padding(.horizontal, 10)
         }
@@ -79,7 +80,7 @@ struct MainView: View {
     private func navigationItem(_ title: String, symbol: String, selected: Bool, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Label(title, systemImage: symbol)
-                .font(.system(size: 13, weight: selected ? .semibold : .regular))
+                .font(HushTypography.font(size: 13, weight: selected ? .semibold : .regular))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 13).padding(.vertical, 12)
                 .background(selected ? hushAccent.opacity(0.09) : .clear, in: RoundedRectangle(cornerRadius: 11))
@@ -91,7 +92,7 @@ struct MainView: View {
     private var header: some View {
         HStack(spacing: 14) {
             Text(showingHistory ? t("启动记录") : t("启动应用"))
-                .font(.system(size: 26, weight: .bold))
+                .font(HushTypography.font(size: 26, weight: .bold))
             Spacer(minLength: 8)
             if showingHistory {
                 Button(t("清空记录")) { runner.clearHistory() }
@@ -125,8 +126,8 @@ struct MainView: View {
                 .foregroundStyle(color).frame(width: 30, height: 30)
                 .background(color.opacity(0.09), in: RoundedRectangle(cornerRadius: 11))
             VStack(alignment: .leading, spacing: 3) {
-                Text(title).font(.system(size: 11)).foregroundStyle(.secondary)
-                Text("\(count)").font(.system(size: 20, weight: .semibold)).monospacedDigit()
+                Text(title).font(HushTypography.font(size: 11)).foregroundStyle(.secondary)
+                Text("\(count)").font(HushTypography.font(size: 20, weight: .semibold)).monospacedDigit()
             }
             Spacer(minLength: 0)
         }.padding(13).frame(maxWidth: .infinity).modifier(HushSurface())
@@ -139,13 +140,13 @@ struct MainView: View {
                     Image(systemName: "sun.horizon")
                         .font(.system(size: 40, weight: .ultraLight)).foregroundStyle(hushAccent)
                     Text(t("从一个安静的早晨开始"))
-                        .font(.system(size: 18, weight: .medium))
+                        .font(HushTypography.font(size: 18, weight: .medium))
                     Text(t("添加登录后需要的应用，设置隐藏、延迟、网络等待与启动顺序。"))
-                        .font(.system(size: 13)).foregroundStyle(.secondary)
+                        .font(HushTypography.font(size: 13)).foregroundStyle(.secondary)
                     Button(t("选择应用…"), action: addApplications)
                         .padding(.top, 4).disabled(store.loadFailed)
                     Text(t("也可以把应用拖到这里"))
-                        .font(.system(size: 11)).foregroundStyle(.tertiary)
+                        .font(HushTypography.font(size: 11)).foregroundStyle(.tertiary)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color(nsColor: .controlBackgroundColor), in: RoundedRectangle(cornerRadius: 14))
@@ -159,7 +160,7 @@ struct MainView: View {
                         Text(t("延迟")).frame(width: 90)
                         Text(t("顺序 / 测试")).frame(width: 120)
                     }
-                    .font(.system(size: 11, weight: .medium)).foregroundStyle(.secondary)
+                    .font(HushTypography.font(size: 11, weight: .medium)).foregroundStyle(.secondary)
                     .padding(.horizontal, 14).padding(.vertical, 11)
                     Divider().opacity(0.5)
                     ScrollView {
@@ -198,9 +199,9 @@ struct MainView: View {
             if runner.records.isEmpty {
                 VStack(spacing: 12) {
                     Image(systemName: "clock").font(.system(size: 34, weight: .light)).foregroundStyle(.tertiary)
-                    Text(t("还没有启动记录")).font(.system(size: 15, weight: .medium))
+                    Text(t("还没有启动记录")).font(HushTypography.font(size: 15, weight: .medium))
                     Text(t("测试启动后，可以在这里查看结果。"))
-                        .font(.system(size: 12)).foregroundStyle(.secondary)
+                        .font(HushTypography.font(size: 12)).foregroundStyle(.secondary)
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 ScrollView {
@@ -210,13 +211,13 @@ struct MainView: View {
                                 Image(systemName: record.failed ? "exclamationmark.circle" : "checkmark.circle")
                                     .foregroundStyle(record.failed ? Color.orange : hushAccent)
                                 VStack(alignment: .leading, spacing: 4) {
-                                    Text(record.name).font(.system(size: 13, weight: .medium))
-                                    Text(t(record.detail)).font(.system(size: 11)).foregroundStyle(.secondary)
+                                    Text(record.name).font(HushTypography.font(size: 13, weight: .medium))
+                                    Text(t(record.detail)).font(HushTypography.font(size: 11)).foregroundStyle(.secondary)
                                         .textSelection(.enabled)
                                 }
                                 Spacer()
                                 Text(record.date, format: .dateTime.month().day().hour().minute().second())
-                                    .font(.system(size: 11)).foregroundStyle(.tertiary)
+                                    .font(HushTypography.font(size: 11)).foregroundStyle(.tertiary)
                             }.padding(15)
                             Divider().padding(.leading, 43).opacity(0.5)
                         }
@@ -230,7 +231,7 @@ struct MainView: View {
         HStack(spacing: 9) {
             if runner.isRunning { ProgressView().controlSize(.small) }
             else { Circle().fill(runner.historyWarning == nil ? Color.green : Color.orange).frame(width: 6, height: 6) }
-            Text(t(runner.historyWarning ?? runner.status)).font(.system(size: 11)).foregroundStyle(.secondary)
+            Text(t(runner.historyWarning ?? runner.status)).font(HushTypography.font(size: 11)).foregroundStyle(.secondary)
                 .lineLimit(1).help(t(runner.historyWarning ?? runner.status))
             Spacer(minLength: 0)
         }
@@ -283,9 +284,9 @@ private struct AppRow: View {
                 .labelsHidden().toggleStyle(.checkbox).disabled(running)
             ApplicationIcon(path: item.path)
             VStack(alignment: .leading, spacing: 4) {
-                Text(item.name).font(.system(size: 13, weight: .medium)).lineLimit(1)
+                Text(item.name).font(HushTypography.font(size: 13, weight: .medium)).lineLimit(1)
                 Text(active ? t("正在处理…") : (item.enabled ? t("第 \(index + 1) 项") : t("已暂停")))
-                    .font(.system(size: 10)).foregroundStyle(active ? hushAccent : .secondary)
+                    .font(HushTypography.font(size: 10)).foregroundStyle(active ? hushAccent : .secondary)
             }
             .frame(maxWidth: .infinity, alignment: .leading).help(item.path)
             Toggle(t("等待网络可用后启动 \(item.name)"), isOn: Binding(get: { item.waitForNetwork }, set: { value in update { $0.waitForNetwork = value } }))
@@ -337,7 +338,7 @@ struct DelayPopUp: NSViewRepresentable {
     func makeNSView(context: Context) -> NSPopUpButton {
         let button = NSPopUpButton(frame: .zero, pullsDown: false)
         button.controlSize = .small
-        button.font = .systemFont(ofSize: NSFont.smallSystemFontSize)
+        button.font = HushTypography.regular(NSFont.smallSystemFontSize)
         button.target = context.coordinator
         button.action = #selector(Coordinator.selectDelay(_:))
         button.setAccessibilityLabel(t("延迟时间"))
@@ -418,7 +419,7 @@ private struct HushButtonStyle: ButtonStyle {
     @Environment(\.colorScheme) private var colorScheme
     func makeBody(configuration: ButtonStyleConfiguration) -> some View {
         configuration.label
-            .font(.system(size: 12, weight: .medium))
+            .font(HushTypography.font(size: 12, weight: .medium))
             .padding(.horizontal, 15).frame(height: 32)
             .foregroundStyle(prominent ? (colorScheme == .dark ? Color.black : Color.white) : Color.primary)
             .background {

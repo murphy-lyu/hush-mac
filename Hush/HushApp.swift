@@ -80,6 +80,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
         statusItem.isVisible = preferences.showMenuBarIcon
         let menu = NSMenu()
+        menu.font = NSFont(name: "BerkeleyMono-Regular", size: menu.font.pointSize) ?? menu.font
         menu.autoenablesItems = false
         menu.delegate = self
         populateMenu(menu)
@@ -87,6 +88,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let main = NSMenu()
         let application = NSMenuItem()
         let appMenu = NSMenu()
+        appMenu.font = NSFont(name: "BerkeleyMono-Regular", size: appMenu.font.pointSize) ?? appMenu.font
         appMenu.addItem(item("关于 Hush", action: #selector(showAbout)))
         appMenu.addItem(item("设置", action: #selector(showSettings), key: ","))
         appMenu.addItem(.separator())
